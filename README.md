@@ -1,8 +1,7 @@
-# DevDataProducts_CourseProject
-ShinyApp - Percentage of People Attaining Higher Education
+# ShinyApp - Percentage of People Attaining Higher Education
 
-## Background
-This app graphs the percentage of persons 25 to 29 years old that attained selected levels of education from 2006 to 2016:
+## How to Use this Shiny App
+This Shiny app produces an interactive graph of the percentage of persons 25 to 29 years old that attained selected levels of education from 2006 to 2016:
 * High school completion or higher
 * Associates or higher degree
 * Bachelors or higher degree      
@@ -16,4 +15,3 @@ The data comes from the National Center for Education Statistics (NCES), the pri
 https://nces.ed.gov/programs/digest/d16/tables/dt16_104.20.asp
 
 Filename: tabn104.20.xls
-
