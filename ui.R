@@ -16,6 +16,10 @@ shinyUI(fluidPage(
   # Sidebar with a slider input for number of bins 
   sidebarLayout(
     sidebarPanel(
+      p("The graph will display the education level that a specific group of people attained from 2006 to 2016."),
+      p("The user can choose the sex and race/ethnicity of the group of people to display in the graph."),
+      br(),
+      
       # Select male, female or both
       selectInput(inputId = "sex", label = strong("Select Sex"),
                   choices = unique(eduAttain$sex),
@@ -30,7 +34,7 @@ shinyUI(fluidPage(
     
     # Show a plot of the generated distribution
     mainPanel(
-     plotOutput("eduPlot")
+      plotOutput("eduPlot")
     )
     
   )

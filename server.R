@@ -20,10 +20,12 @@ shinyServer(function(input, output) {
       labs(title = "Percent of People Attaining Education Level",
                   subtitle = sub_title,
                   x = "year", y = "Percent of People, (age 25 - 29)") +
+      theme(plot.title = element_text(size=14)) +
+      theme(plot.subtitle=element_text(size=12)) +
       scale_colour_discrete(name="Educational Level Attained") +
       theme(legend.position="bottom", legend.direction = "vertical") +
-      theme(legend.title = element_text(size=9)) +
-      theme(legend.text = element_text(size=8))
+      theme(legend.title = element_text(size=11)) +
+      theme(legend.text = element_text(size=10))
     
     
     eduPlot
