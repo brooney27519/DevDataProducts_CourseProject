@@ -1,0 +1,97 @@
+---
+title: "Percent of People Attaining Higher Education"
+author: "Brian Rooney"
+date: "December 30, 2017"
+output:
+  slidy_presentation: default
+  ioslides_presentation:
+    fig_height: 4
+    smaller: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(ggplot2)
+```
+
+```{r loadData, echo=FALSE}
+filename <- "http://raw.githubusercontent.com/brooney27519/DevDataProducts_CourseProject/master/Education%20Attainment%20Percentages.csv"
+eduAttain <- read.csv(filename)
+```
+
+## Percent of People Attaining Education
+
+This slide presentation highlights the key features used to produce a Shiny application displaying an interactive graph of the percent of people (ages 25 to 29) that attained selected levels of education from 2006 to 2016:
+
+The Levels of Education are:
+
+* High school completion or higher
+* Associates or higher degree
+* Bachelors or higher degree
+* Masters or higher degree
+
+The Shiny Application can be accessed at:
+http://brooney27519.shinyapps.io/DevDataProd_CourseProj/
+
+## Basics of Shiny App {.smaller}
+
+<h5>This simple app allows users to make selections to automatically update the graph as shown below.</h5>
+
+![](http://brooney27519.github.io/DevDataProducts_CourseProject/sampleShinyApp.png)
+
+## ui.R Code for Shiny App
+
+```{r uiComponents,eval=FALSE}
+library(shiny)
+source("EduAttainmentData.R")
+
+shinyUI(fluidPage(
+  titlePanel("Percentage of People with Selected Levels of Education (2006 to 2016)"),
+    
+  sidebarLayout(
+    sidebarPanel(
+      selectInput(inputId = "sex", label = strong("Select Sex"),
+                  choices = unique(eduAttain$sex),
+                  selected = "Both"),
+      
+      selectInput(inputId = "race", label = strong("Select Race/Ethnicity"),
+                choices = names(eduAttain[4:8]),
+                selected = "all_races")
+      ),
+    mainPanel(
+      plotOutput("eduPlot")
+    )
+  )
+))
+```
+
+## server.R Code for Shiny App
+
+```{r serverComponents,eval=FALSE}
+library(shiny)
+library(dplyr)
+library(ggplot2)
+
+shinyServer(function(input, output) {
+  output$eduPlot <- renderPlot({
+    plotData <- eduAttain %>% select(year, education_level, sex, input$race) %>% filter(sex == input$sex)
+    
+    sub_title <- paste0("Sex = ", input$sex ,"; Race = ", input$race)
+    
+    eduPlot <- ggplot(data = plotData, aes(x=year, y=plotData[,4])) +
+      geom_line(aes(colour=education_level)) + 
+      labs(title = "Percent of People Attaining Education Level",
+                  subtitle = sub_title,
+                  x = "year", y = "Percent of People, (age 25 - 29)") +
+      theme(plot.title = element_text(size=14)) +
+      theme(plot.subtitle=element_text(size=12)) +
+      scale_colour_discrete(name="Educational Level Attained") +
+      theme(legend.position="bottom", legend.direction = "vertical") +
+      theme(legend.title = element_text(size=11)) +
+      theme(legend.text = element_text(size=10))
+    
+    eduPlot
+  })
+})
+```
